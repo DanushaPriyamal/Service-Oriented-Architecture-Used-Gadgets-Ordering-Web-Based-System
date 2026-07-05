@@ -1,0 +1,6 @@
+- Developed a web based gadgets ordering system using service oriented architecture
+- Backend built with .NET C# APIs in the Visual Studio environment
+- Frontend created using HTML, CSS, and JavaScript
+- The customer interface facilitates for viewing all available gadgets, adding items to the cart with specified quantities, placing orders with detailed information and viewing notifications
+- The order managing interface facilitates for adding new gadgets to the system with details, viewing all orders received from customers, viewing all quotations received from distributors, placing orders with distributors and sending notifications to customers
+- The distributor interfaces facilitate for viewing all quotation requests, formulating quotations, viewing orders for delivery and confirming received orders for delivery
