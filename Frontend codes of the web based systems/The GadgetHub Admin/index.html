@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GadgetHub Admin | Integrated Panel</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --border: #334155;
+            --success: #22c55e;
+            --error: #ef4444;
+            --electro: #fbbf24;
+            --central: #ec4899;
+            --techworld: #06b6d4;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Header Title */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        /* Navigation */
+        .main-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+        }
+
+        .vendor-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 12px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Containers */
+        .section-container {
+            display: none;
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
+            max-width: 1100px;
+        }
+
+        .active-section {
+            display: block !important;
+        }
+
+        .form-container {
+            max-width: 450px;
+        }
+
+        /* Forms & Inputs */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--primary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .quote-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            border-left: 3px solid var(--primary);
+            font-size: 0.8rem;
+        }
+
+        .badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .bg-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+        }
+
+        #preview-container {
+            text-align: center;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        #imgPreview {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .quick-add-bar {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 class="dashboard-header">The GadgetHub Admin dashboard</h1>
+
+    <div class="main-tabs">
+        <button class="tab-btn active" onclick="switchMainTab('addGadget', this)">Add Gadget</button>
+        <button class="tab-btn" onclick="switchMainTab('viewOrders', this)">Customer Orders</button>
+        <button class="tab-btn" onclick="switchMainTab('viewQuotes', this)">Quotations</button>
+        <button class="tab-btn" onclick="switchMainTab('addNotification', this)">Notifications</button>
+    </div>
+
+    <div id="addGadgetSection" class="section-container active-section form-container">
+        <h2>Add Gadget</h2>
+        <form id="gadgetForm">
+            <div class="form-group"><label>Name</label><input type="text" id="GName" required></div>
+            <div class="form-group"><label>Description</label><textarea id="GDescription" required></textarea></div>
+            <div class="form-group"><label>Price (RS)</label><input type="number" id="GPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label>Upload Image</label>
+                <input type="file" id="fileInput" accept="image/*" required>
+                <div id="preview-container"><img id="imgPreview" src=""></div>
+            </div>
+            <button type="submit" class="tab-btn" id="submitBtn" style="width:100%; background:var(--primary)">Add
+                Gadget</button>
+        </form>
+        <div id="status" style="margin-top:10px; text-align:center;"></div>
+    </div>
+
+    <div id="addNotificationSection" class="section-container form-container">
+        <h2>Send Notification</h2>
+        <form id="notificationForm">
+            <div class="form-group">
+                <label>Topic</label>
+                <input type="text" id="topic" placeholder="E.g. New Stock Arrival" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="description" rows="4" placeholder="Enter notification details..." required></textarea>
+            </div>
+            <button type="submit" class="tab-btn" id="notifSubmitBtn" style="width:100%; background:var(--primary)">Send
+                Notification</button>
+        </form>
+        <div id="notifStatus" style="margin-top:10px; text-align:center;"></div>
+    </div>
+
+    <div id="viewOrdersSection" class="section-container">
+        <h2>Customer Orders List</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer Name</th>
+                        <th>Ordered Items</th>
+                        <th>Total</th>
+                        <th>Ordered Date</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="viewQuotesSection" class="section-container">
+        <h2>Quotations</h2>
+
+        <div class="quick-add-bar">
+            <span style="font-weight: bold; font-size: 0.9rem;">Send Orders to <span id="currentTargetVendor"
+                    style="color:var(--primary)">ElectroCOM</span>:</span>
+            <input type="number" id="quickOrderId" placeholder="Enter Order ID"
+                style="margin-bottom: 0; width: 200px; height: 40px;">
+            <button onclick="pushToVendorFromQuote()" class="tab-btn"
+                style="background: var(--primary); padding: 8px 25px;">Send Order</button>
+        </div>
+
+        <div class="vendor-tabs">
+            <button class="tab-btn v-btn active" onclick="switchVendor('electro', this)"
+                style="border-bottom: 3px solid var(--electro)">ElectroCOM</button>
+            <button class="tab-btn v-btn" onclick="switchVendor('central', this)"
+                style="border-bottom: 3px solid var(--central)">Gadget Central</button>
+            <button class="tab-btn v-btn" onclick="switchVendor('techworld', this)"
+                style="border-bottom: 3px solid var(--techworld)">TechWorld</button>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Formulated Items</th>
+                        <th>Order Total</th>
+                    </tr>
+                </thead>
+                <tbody id="quoteTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let activeVendorKey = 'electro';
+
+        //NAVIGATION
+        function switchMainTab(id, btn) {
+            document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active-section'));
+            document.querySelectorAll('.main-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id + 'Section').classList.add('active-section');
+            btn.classList.add('active');
+            if (id === 'viewOrders') fetchGeneralOrders();
+            if (id === 'viewQuotes') switchVendor('electro', document.querySelector('.v-btn'));
+        }
+
+        //NOTIFICATION
+        document.getElementById('notificationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('notifSubmitBtn');
+            const status = document.getElementById('notifStatus');
+
+            const payload = {
+                topic: document.getElementById('topic').value,
+                description: document.getElementById('description').value
+            };
+
+            btn.innerText = "Sending..."; btn.disabled = true;
+
+            try {
+
+                const res = await fetch('https://localhost:7214/api/Notification/AddNotification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    status.innerText = "Notification send successfully!";
+                    status.style.color = "var(--success)";
+                    e.target.reset();
+                } else {
+                    throw new Error("Failed to save");
+                }
+            } catch (err) {
+                status.innerText = "Error: Could not send notification.";
+                status.style.color = "var(--error)";
+            } finally {
+                btn.innerText = "Send Notification";
+                btn.disabled = false;
+            }
+        });
+
+        //IMAGE PREVIEW
+        const fileInput = document.getElementById('fileInput');
+        fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('imgPreview').src = e.target.result;
+                    document.getElementById('preview-container').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        //ADD GADGET FORM
+        document.getElementById('gadgetForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const status = document.getElementById('status');
+            btn.innerText = "Processing..."; btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('GName', document.getElementById('GName').value);
+            formData.append('GDescription', document.getElementById('GDescription').value);
+            formData.append('GPrice', document.getElementById('GPrice').value);
+            formData.append('imageFile', fileInput.files[0]);
+
+            try {
+                const res = await fetch('https://localhost:7214/api/Gadget/AddGadget', { method: 'POST', body: formData });
+                const result = await res.json();
+                status.innerText = "Success: " + result.statusMessage;
+                status.style.color = "var(--success)";
+                e.target.reset(); document.getElementById('preview-container').style.display = 'none';
+            } catch (err) {
+                status.innerText = "Error saving gadget.";
+                status.style.color = "var(--error)";
+            } finally { btn.innerText = "Add Gadget"; btn.disabled = false; }
+        });
+
+        //DISPLAY CUSTOMER ORDERS
+        async function fetchGeneralOrders() {
+            const tbody = document.getElementById('ordersTableBody');
+            tbody.innerHTML = "<tr><td colspan='5'>Loading orders...</td></tr>";
+            try {
+                const res = await fetch('https://localhost:7214/api/Order/GetAllOrders');
+                const data = await res.json();
+                tbody.innerHTML = "";
+                data.forEach(o => {
+                    let itemsHtml = (o.items || []).map(i =>
+                        `<div class="quote-item">G-ID: ${i.gId} | Qty: ${i.quantity} | RS ${i.gPrice.toLocaleString()}</div>`
+                    ).join('');
+                    tbody.innerHTML += `<tr><td>#${o.orderId}</td><td>${o.customerName}</td><td>${itemsHtml}</td><td>RS ${o.total.toLocaleString()}</td><td>${new Date(o.orderDate).toLocaleDateString()}</td></tr>`;
+                });
+            } catch (e) { tbody.innerHTML = "<tr><td colspan='5'>Error loading orders.</td></tr>"; }
+        }
+
+        //QUOTATION LOGIC
+        async function switchVendor(vendor, btn) {
+            activeVendorKey = vendor;
+            document.querySelectorAll('.v-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const displayNames = { electro: 'ElectroCOM', central: 'Gadget Central', techworld: 'TechWorld' };
+            document.getElementById('currentTargetVendor').innerText = displayNames[vendor];
+
+            const urls = {
+                electro: 'https://localhost:7214/api/ElectroComFormulationQuatation/GetElectroComFormulationQuatation',
+                central: 'https://localhost:7214/api/GadgetCentralFormulationQuatation/GetGadgetCentralFormulationQuatation',
+                techworld: 'https://localhost:7214/api/TechWorldFormulationQuatation/GetTechWorldFormulationQuatation'
+            };
+            fetchQuotationData(urls[vendor]);
+        }
+
+        async function fetchQuotationData(url) {
+            const tbody = document.getElementById('quoteTableBody');
+            tbody.innerHTML = "<tr><td colspan='4'>Loading quotations...</td></tr>";
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const orders = Array.isArray(data) ? data : [data];
+                tbody.innerHTML = "";
+                orders.forEach(order => {
+                    let itemsHtml = order.items.map(item => `
+                        <div class="quote-item">
+                            <strong>G-ID: ${item.gId}</strong> | RS ${item.pricePerUnit.toLocaleString()} | Qty: ${item.numberOfUnit}<br>
+                            <span class="badge bg-success">${item.availability}</span> | Delivery: ${new Date(item.deliveryTime).toLocaleDateString()}
+                        </div>`).join('');
+                    tbody.innerHTML += `<tr><td>#${order.orderId}</td><td>${order.customerName}</td><td>${itemsHtml}</td><td><strong>RS ${order.total.toLocaleString()}</strong></td></tr>`;
+                });
+            } catch (e) { tbody.innerHTML = "<tr><td colspan='4'>Error loading quotes.</td></tr>"; }
+        }
+
+        //SEND ORDERS
+        async function pushToVendorFromQuote() {
+            const orderIdValue = document.getElementById('quickOrderId').value;
+            if (!orderIdValue) return alert("Please enter an Order ID");
+
+            const postUrls = {
+                electro: 'https://localhost:7214/api/ElectroComOrders/AddElectroComOrders',
+                central: 'https://localhost:7214/api/GadgetCentralOrders/AddGadgetCentralOrders',
+                techworld: 'https://localhost:7214/api/TechWorldOrders/AddTechWorldOrders'
+            };
+
+            const payload = {
+                distributorOrderId: 0,
+                orderId: parseInt(orderIdValue),
+                confirmation: "Pending",
+                items: []
+            };
+
+            try {
+                const response = await fetch(postUrls[activeVendorKey], {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && (result.statusCode === 200 || result.statusCode === 201)) {
+                    alert(`${result.statusMessage || "Order Sent Successfully"}`);
+                    document.getElementById('quickOrderId').value = "";
+                    switchVendor(activeVendorKey, document.querySelector(`.v-btn.active`));
+                } else {
+                    alert(`${result.statusMessage || "Failed to send order. Ensure ID is valid."}`);
+                }
+            } catch (err) {
+                console.error("Network error:", err);
+                alert("Connection error: Ensure your API is running.");
+            }
+        }
+    </script>
+</body>
+
+</html>

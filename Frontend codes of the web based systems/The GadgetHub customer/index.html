@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GadgetHub | Modern Store</title>
+    <style>
+        :root {
+            --primary: #2a9d8f;
+            --secondary: #264653;
+            --accent: #e76f51;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background: var(--secondary);
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        /*NOTIFICATION UI STYLES */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notif-bell {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+            display: none;
+            /* Hidden if 0 */
+        }
+
+        .notif-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            /* Hidden by default */
+            width: 350px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 2000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notif-panel.active {
+            right: 0;
+        }
+
+        .notif-header {
+            padding: 20px;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notif-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .notif-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px;
+            transition: background 0.2s;
+        }
+
+        .notif-item:hover {
+            background: #f9f9f9;
+        }
+
+        .notif-item h4 {
+            margin: 0 0 5px 0;
+            color: var(--secondary);
+            font-size: 1rem;
+        }
+
+        .notif-item p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* ------------------------------ */
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 30px;
+            padding: 30px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        #gadget-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        .card-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            flex-grow: 1;
+            font-weight: bold;
+        }
+
+        .cart-sidebar {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .remove-btn {
+            color: var(--accent);
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 450px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 950px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>GadgetHub</h1>
+        <div class="header-actions">
+            <div class="notif-bell" id="openNotif">
+                🔔 <span class="notif-badge" id="notifCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="notif-panel" id="notifPanel">
+        <div class="notif-header">
+            <h3>Notifications</h3>
+            <button id="closeNotif"
+                style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+        </div>
+        <div class="notif-list" id="notifList">
+            <p style="text-align:center; color:#999; margin-top:20px;">No new notifications</p>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div id="gadget-container"></div>
+
+        <aside class="cart-sidebar">
+            <h2>Shopping Cart</h2>
+            <div id="cart-list"></div>
+            <div style="margin-top:20px; border-top: 2px solid #f4f4f4; padding-top:10px;">
+                <h3>Total: Rs. <span id="cart-total">0</span></h3>
+                <button id="btn-open-modal" class="checkout-btn">Place Order</button>
+            </div>
+        </aside>
+    </div>
+
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-content">
+            <h2>Order Information</h2>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label>Customer Name</label>
+                    <input type="text" id="custName" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="custPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address</label>
+                    <textarea id="custAddress" rows="3" required></textarea>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" id="btn-close-modal"
+                        style="flex:1; padding:12px; border:none; border-radius:6px; cursor:pointer;">Cancel</button>
+                    <button type="submit"
+                        style="flex:1; padding:12px; background:var(--primary); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Place
+                        Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const baseUrl = "https://localhost:7214/";
+            let cart = JSON.parse(localStorage.getItem("gadgetCart")) || [];
+
+            // 1. Fetch Products
+            function loadProducts() {
+                $.ajax({
+                    url: baseUrl + "api/Gadget/GetAllGadget",
+                    type: 'GET',
+                    success: function (data) {
+                        let html = "";
+                        data.forEach(g => {
+                            let path = g.gImagePath ? baseUrl + g.gImagePath.replace(/\\/g, '/') : "https://via.placeholder.com/300";
+                            html += `
+                            <div class="product-card">
+                                <img src="${path}" alt="${g.gName}">
+                                <div class="card-body">
+                                    <h3>${g.gName}</h3>
+                                    <p>${g.gDescription || ''}</p>
+                                    <p class="price">Rs. ${g.gPrice.toLocaleString()}</p>
+                                    <p>Gadget ID: ${g.gId}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <input type="number" id="qty-${g.gId}" value="1" min="1">
+                                    <button class="add-btn" onclick="addToCart(${g.gId}, '${g.gName}', ${g.gPrice})">Add to Cart</button>
+                                </div>
+                            </div>`;
+                        });
+                        $("#gadget-container").html(html);
+                    }
+                });
+            }
+
+            // NOTIFICATION LOGIC
+            function loadNotifications() {
+                $.ajax({
+                    url: baseUrl + "api/Notification/GetAllNotification",
+                    type: 'GET',
+                    success: function (notifications) {
+                        if (notifications && notifications.length > 0) {
+                            let html = "";
+                            notifications.forEach(n => {
+                                html += `
+                                <div class="notif-item">
+                                    <h4>${n.topic}</h4>
+                                    <p>${n.description}</p>
+                                </div>`;
+                            });
+                            $("#notifList").html(html);
+                            $("#notifCount").text(notifications.length).show();
+                        }
+                    },
+                    error: function () { console.log("Notification API unreachable."); }
+                });
+            }
+
+            $("#openNotif").click(() => $("#notifPanel").addClass("active"));
+            $("#closeNotif").click(() => $("#notifPanel").removeClass("active"));
+            // -------------------------------
+
+            // 2. Cart Functions
+            window.addToCart = function (id, name, price) {
+                const qty = parseInt($(`#qty-${id}`).val());
+                const existing = cart.find(i => i.gId === id);
+                if (existing) { existing.quantity += qty; }
+                else { cart.push({ gId: id, gName: name, gPrice: price, quantity: qty }); }
+                renderCart();
+            };
+
+            window.removeItem = function (index) {
+                cart.splice(index, 1);
+                renderCart();
+            };
+
+            function renderCart() {
+                localStorage.setItem("gadgetCart", JSON.stringify(cart));
+                let html = "", total = 0;
+                if (cart.length === 0) { html = "<p style='text-align:center; color:#999;'>Your cart is empty.</p>"; }
+                else {
+                    cart.forEach((item, index) => {
+                        let subtotal = item.gPrice * item.quantity;
+                        total += subtotal;
+                        html += `
+                        <div class="cart-item">
+                            <div><strong>${item.gName}</strong><br><small>${item.quantity} x Rs. ${item.gPrice}</small></div>
+                            <div><span>Rs. ${subtotal}</span><button class="remove-btn" onclick="removeItem(${index})">&times;</button></div>
+                        </div>`;
+                    });
+                }
+                $("#cart-list").html(html);
+                $("#cart-total").text(total.toLocaleString());
+            }
+
+            // 3. Modal Controls
+            $("#btn-open-modal").click(() => {
+                if (cart.length === 0) return alert("Add items to your cart first!");
+                $("#checkoutModal").css("display", "flex");
+            });
+            $("#btn-close-modal").click(() => $("#checkoutModal").hide());
+
+            // 4. Final Order
+            $("#orderForm").on("submit", function (e) {
+                e.preventDefault();
+                const orderPayload = {
+                    customerName: $("#custName").val(),
+                    customerPhone: $("#custPhone").val(),
+                    address: $("#custAddress").val(),
+                    items: cart,
+                    total: parseFloat($("#cart-total").text().replace(/,/g, ''))
+                };
+
+                $.ajax({
+                    url: baseUrl + "api/Order/PlaceOrder",
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(orderPayload),
+                    success: function () {
+                        alert("Order successfully placed!");
+                        localStorage.removeItem("gadgetCart");
+                        location.reload();
+                    },
+                    error: () => alert("Error: API not reachable.")
+                });
+            });
+
+            loadProducts();
+            renderCart();
+            loadNotifications(); // Initial load for notifications
+
+            // Optional: Refresh notifications every 60 seconds
+            setInterval(loadNotifications, 60000);
+        });
+    </script>
+</body>
+
+</html>

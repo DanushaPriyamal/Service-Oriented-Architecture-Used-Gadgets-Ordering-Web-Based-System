@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroCom | Management Console</title>
+    <style>
+        :root {
+            --primary: #3f51b5;
+            --secondary: #303f9f;
+            --success: #2a9d8f;
+            --bg: #f0f2f5;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --danger: #e76f51;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: var(--white);
+            border-bottom: 2px solid #ddd;
+            padding: 0 5%;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: bold;
+            color: #666;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .tab-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #555;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-formulate {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-confirm {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            opacity: 0.9;
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .item-badge {
+            display: inline-block;
+            background: #e8eaf6;
+            color: var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .price-tag {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>ElectroCom Dashboard</h1>
+        <div id="status-indicator" style="font-size: 0.8rem;">Admin Portal</div>
+    </header>
+
+    <nav class="tab-nav">
+        <button class="tab-btn active" onclick="showTab('quotation-tab', this)">Quotation Requests</button>
+        <button class="tab-btn" onclick="showTab('delivery-tab', this)">Received Order Details</button>
+    </nav>
+
+    <div class="container">
+        <div id="quotation-tab" class="tab-content active">
+            <div class="card">
+                <h2>Quotation Requests</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Item Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quotation-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="delivery-tab" class="tab-content">
+            <div class="card">
+                <h2>Received Order Details</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Distributor ID</th>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Address</th>
+                            <th>Total Amount</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="delivery-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="formulateModal">
+        <div class="modal-content">
+            <h3>Formulate Quote</h3>
+            <form id="formulateForm">
+                <input type="hidden" id="f-orderId">
+                <input type="hidden" id="f-gId">
+                <div class="form-group"><label>Price (Rs.)</label><input type="number" id="pricePerUnit" required
+                        step="0.01"></div>
+                <div class="form-group"><label>Units</label><input type="number" id="numberOfUnit" required></div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="availability">
+                        <option value="In Stock">In Stock</option>
+                        <option value="Limited Stock">Limited Stock</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Date</label><input type="date" id="deliveryTime" required></div>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button type="button" onclick="$('#formulateModal').hide()" style="flex:1;">Cancel</button>
+                    <button type="submit" class="btn btn-formulate" style="flex:2;">Confirm Quotation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        const baseUrl = "https://localhost:7214/";
+
+        function showTab(tabId, btn) {
+            $('.tab-content').removeClass('active');
+            $('.tab-btn').removeClass('active');
+            $('#' + tabId).addClass('active');
+            $(btn).addClass('active');
+        }
+
+        function loadQuotationRequests() {
+            $.ajax({
+                url: baseUrl + "api/ElectroCom/QuatationRequest",
+                type: 'GET',
+                success: function (data) {
+                    let html = "";
+                    data.forEach(order => {
+                        let itemsHtml = "";
+                        order.items.forEach(item => {
+                            itemsHtml += `
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px; border-bottom:1px dashed #eee; padding:5px 0;">
+                                <span><span class="item-badge">G-ID: ${item.gId}</span> x ${item.quantity}</span>
+                                <button class="btn btn-formulate" onclick="openFormulate(${order.orderId}, ${item.gId}, ${item.quantity})">Formulate</button>
+                            </div>`;
+                        });
+                        html += `<tr><td>#${order.orderId}</td><td>${order.customerName}</td><td>${itemsHtml}</td></tr>`;
+                    });
+                    $("#quotation-table-body").html(html);
+                }
+            });
+        }
+
+        function loadDeliveryTable() {
+            $.ajax({
+                url: baseUrl + "api/ElectroCom/GetElectroComOrders",
+                type: 'GET',
+                success: function (data) {
+                    let html = "";
+                    data.forEach(order => {
+                        if (order.items && order.items.length > 0) {
+                            const details = order.items[0];
+                            const date = new Date(details.orderDate).toLocaleDateString();
+                            html += `
+                            <tr>
+                                <td><span class="item-badge">D-#${order.distributorOrderId}</span></td>
+                                <td><strong>#${order.orderId}</strong></td>
+                                <td><strong>${details.customerName}</strong><br><small>${details.customerPhone}</small></td>
+                                <td>${details.address}</td>
+                                <td class="price-tag">Rs. ${details.total.toLocaleString()}</td>
+                                <td>${date}</td>
+                                <td>
+                                    <button class="btn btn-confirm" id="btn-conf-${order.orderId}" onclick="confirmOrder(${order.orderId})">
+                                        Confirm Order
+                                    </button>
+                                </td>
+                            </tr>`;
+                        }
+                    });
+                    $("#delivery-table-body").html(html);
+                }
+            });
+        }
+
+
+        window.confirmOrder = function (orderId) {
+            if (!confirm(`Are you sure you want to confirm Order #${orderId}?`)) return;
+
+            const btn = $(`#btn-conf-${orderId}`);
+            btn.prop('disabled', true).text('Updating...');
+
+            $.ajax({
+
+                url: `${baseUrl}api/ElectroCom/ConfirmOrders?OrderId=${orderId}&Confirmation=Confirmed`,
+                type: 'POST',
+                success: function (response) {
+                    alert(`Order #${orderId} confirmed successfully!`);
+                    loadDeliveryTable(); // This refreshes the UI
+                },
+                error: function (err) {
+                    console.error("Confirmation Error Details:", err);
+                    const errorMsg = err.responseJSON ? err.responseJSON.statusMessage : "Check API connection.";
+                    alert("Error: " + errorMsg);
+                    btn.prop('disabled', false).text('Confirm Order');
+                }
+            });
+        };
+
+        window.openFormulate = function (orderId, gId, qty) {
+            $("#f-orderId").val(orderId); $("#f-gId").val(gId); $("#numberOfUnit").val(qty);
+            $("#formulateModal").css("display", "flex");
+        };
+
+        $("#formulateForm").on("submit", function (e) {
+            e.preventDefault();
+            const payload = {
+                orderId: parseInt($("#f-orderId").val()),
+                gId: parseInt($("#f-gId").val()),
+                pricePerUnit: parseFloat($("#pricePerUnit").val()),
+                numberOfUnit: parseInt($("#numberOfUnit").val()),
+                availability: $("#availability").val(),
+                deliveryTime: new Date($("#deliveryTime").val()).toISOString()
+            };
+            $.ajax({
+                url: baseUrl + "api/ElectroCom/AddFormulateQuatation",
+                type: 'POST', contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function () {
+                    alert("Quotation Success!"); $("#formulateModal").hide();
+                    loadQuotationRequests(); loadDeliveryTable();
+                }
+            });
+        });
+
+        // Initial loads
+        loadQuotationRequests();
+        loadDeliveryTable();
+    </script>
+</body>
+
+</html>

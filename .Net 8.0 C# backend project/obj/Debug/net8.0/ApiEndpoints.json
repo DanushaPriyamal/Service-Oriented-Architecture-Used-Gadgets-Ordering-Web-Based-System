@@ -1,0 +1,389 @@
+[
+  {
+    "ContainingType": "TheGadgetHub.Controllers.ElectroComController",
+    "Method": "AddElectroComFormulateQuatation",
+    "RelativePath": "api/ElectroCom/AddFormulateQuatation",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fqec",
+        "Type": "TheGadgetHub.Models.FormulateQuatationElectroCom",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.ElectroComController",
+    "Method": "ConfirmElectroComOrders",
+    "RelativePath": "api/ElectroCom/ConfirmOrders",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "DistributorOrderId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "OrderId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Confirmation",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Items",
+        "Type": "System.Collections.Generic.List\u00601[[TheGadgetHub.Models.ODRElectroCom, TheGadgetHub, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.ElectroComController",
+    "Method": "GetElectroOrderDetails",
+    "RelativePath": "api/ElectroCom/GetElectroComOrders",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.ElectroComController",
+    "Method": "QuatationRequest",
+    "RelativePath": "api/ElectroCom/QuatationRequest",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.ElectroComFormulationQuatationController",
+    "Method": "GetTechWorldFormulateQuatation",
+    "RelativePath": "api/ElectroComFormulationQuatation/GetElectroComFormulationQuatation",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.ElectroComOrdersController",
+    "Method": "AddElectroComOrders",
+    "RelativePath": "api/ElectroComOrders/AddElectroComOrders",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "eco",
+        "Type": "TheGadgetHub.Models.ElectroComOrders",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.GadgetController",
+    "Method": "AddGadget",
+    "RelativePath": "api/Gadget/AddGadget",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "GId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "GName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "GDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "GPrice",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "GImagePath",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "GStatus",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "imageFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.GadgetController",
+    "Method": "GetAllGadget",
+    "RelativePath": "api/Gadget/GetAllGadget",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.GadgetCentralController",
+    "Method": "AddGadgetCentralFormulateQuatation",
+    "RelativePath": "api/GadgetCentral/AddFormulateQuatation",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fqgc",
+        "Type": "TheGadgetHub.Models.FormulateQuatationGadgetCentral",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.GadgetCentralController",
+    "Method": "ConfirmGadgetCentralOrders",
+    "RelativePath": "api/GadgetCentral/ConfirmOrders",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "DistributorOrderId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "OrderId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Confirmation",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Items",
+        "Type": "System.Collections.Generic.List\u00601[[TheGadgetHub.Models.ODREGadgetCentral, TheGadgetHub, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.GadgetCentralController",
+    "Method": "GetGadgetCentralDetails",
+    "RelativePath": "api/GadgetCentral/GetGadgetCentralOrders",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.GadgetCentralController",
+    "Method": "QuatationRequest",
+    "RelativePath": "api/GadgetCentral/QuatationRequest",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.GadgetCentralFormulationQuatationController",
+    "Method": "GetGadgetCentralFormulateQuatation",
+    "RelativePath": "api/GadgetCentralFormulationQuatation/GetGadgetCentralFormulationQuatation",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.GadgetCentralOrdersController",
+    "Method": "AddGadgetCentralOrders",
+    "RelativePath": "api/GadgetCentralOrders/AddGadgetCentralOrders",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "gco",
+        "Type": "TheGadgetHub.Models.GadgetCentralOrders",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.NotificationController",
+    "Method": "AddNotification",
+    "RelativePath": "api/Notification/AddNotification",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "notification",
+        "Type": "TheGadgetHub.Models.Notification",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.NotificationController",
+    "Method": "GetAllNotifications",
+    "RelativePath": "api/Notification/GetAllNotification",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.OrderController",
+    "Method": "GetAllOrders",
+    "RelativePath": "api/Order/GetAllOrders",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.OrderController",
+    "Method": "PlaceOrder",
+    "RelativePath": "api/Order/PlaceOrder",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderRequest",
+        "Type": "TheGadgetHub.Models.OrderRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.TechWorldController",
+    "Method": "AddTechWorldFormulateQuatation",
+    "RelativePath": "api/TechWorld/AddFormulateQuatation",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fqtw",
+        "Type": "TheGadgetHub.Models.FormulateQuatationTechWorld",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.TechWorldController",
+    "Method": "ConfirmTechWorldOrders",
+    "RelativePath": "api/TechWorld/ConfirmOrders",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "DistributorOrderId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "OrderId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Confirmation",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Items",
+        "Type": "System.Collections.Generic.List\u00601[[TheGadgetHub.Models.ODRETechWorld, TheGadgetHub, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.TechWorldController",
+    "Method": "GetTechWorldDetails",
+    "RelativePath": "api/TechWorld/GetTechWorldOrders",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.TechWorldController",
+    "Method": "QuatationRequest",
+    "RelativePath": "api/TechWorld/QuatationRequest",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.TechWorldFormulationQuatationController",
+    "Method": "GetTechWorldFormulateQuatation",
+    "RelativePath": "api/TechWorldFormulationQuatation/GetTechWorldFormulationQuatation",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TheGadgetHub.Controllers.TechWorldOrdersController",
+    "Method": "AddTechWorldOrders",
+    "RelativePath": "api/TechWorldOrders/AddTechWorldOrders",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "two",
+        "Type": "TheGadgetHub.Models.TechWorldOrders",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
